@@ -1,0 +1,8 @@
+setup.py
+hoplite/__init__.py
+hoplite/_hoplite_client.cpp
+hoplite.egg-info/PKG-INFO
+hoplite.egg-info/SOURCES.txt
+hoplite.egg-info/dependency_links.txt
+hoplite.egg-info/not-zip-safe
+hoplite.egg-info/top_level.txt

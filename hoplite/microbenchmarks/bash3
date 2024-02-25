@@ -1,0 +1,3 @@
+pushd dask-python
+./dask_roundtrip.sh  # => dask-roundtrip.csv
+popd

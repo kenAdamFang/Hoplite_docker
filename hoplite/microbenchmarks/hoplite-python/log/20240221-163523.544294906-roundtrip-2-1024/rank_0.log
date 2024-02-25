@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "hoplite_microbenchmarks.py", line 153, in <module>
+    raise ValueError("For the roundtrip microbenchmark, the world_size must be 2.")
+ValueError: For the roundtrip microbenchmark, the world_size must be 2.

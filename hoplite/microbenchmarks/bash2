@@ -1,0 +1,8 @@
+pushd mpi-cpp
+for i in `seq 1`; do
+./run_test.sh roundtrip 2 $[2**10]
+./run_test.sh roundtrip 2 $[2**20]
+./run_test.sh roundtrip 2 $[2**30]
+done
+python parse_roundtrip_result.py --verbose
+popd
