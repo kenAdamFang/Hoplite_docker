@@ -1,0 +1,46 @@
+cluster_name: hoplite-single
+
+min_workers: 0
+max_workers: 0
+initial_workers: 0
+
+provider:
+    type: aws
+    region: us-west-1
+    # Availability zone(s), comma-separated, that nodes may be launched in.
+    # Nodes are currently spread between zones by a round-robin approach,
+    # however this implementation detail should not be relied upon.
+    availability_zone: us-west-1b
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+    ssh_private_key: /Users/zhuohan123/.ssh/shared_key.pem
+
+head_node:
+    InstanceType: m5.4xlarge
+    ImageId: ami-0445e6fea66b74ae5 # rllib-all
+    KeyName: shared_key
+    SecurityGroupIds:
+        - "sg-878331f8"
+
+worker_nodes:
+    InstanceType: m5.4xlarge
+    ImageId: ami-0445e6fea66b74ae5 # rllib-all
+    KeyName: shared_key
+    SecurityGroupIds:
+        - "sg-878331f8"
+
+setup_commands:
+    - sudo mount -t efs fs-760d746f:/ efs
+    - sudo chmod 777 efs
+
+# Command to start ray on the head node. You don't need to change this.
+head_start_ray_commands:
+    - ray stop
+    - "ulimit -n 65536; ray start --head --redis-port=6379 --object-manager-port=8076 --autoscaling-config=~/ray_bootstrap_config.yaml --resources='{\"machine\": 1}'"
+
+# Command to start ray on worker nodes. You don't need to change this.
+worker_start_ray_commands:
+    - ray stop
+    - "ulimit -n 65536; ray start --address=$RAY_HEAD_IP:6379 --object-manager-port=8076 --resources='{\"machine\": 1}'"

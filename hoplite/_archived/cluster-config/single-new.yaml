@@ -1,0 +1,46 @@
+cluster_name: hoplite-single-initial
+
+min_workers: 0
+max_workers: 0
+initial_workers: 0
+
+provider:
+    type: aws
+    region: us-west-2
+    # Availability zone(s), comma-separated, that nodes may be launched in.
+    # Nodes are currently spread between zones by a round-robin approach,
+    # however this implementation detail should not be relied upon.
+    availability_zone: us-west-2a
+    cache_stopped_nodes: False
+
+auth:
+    ssh_user: ubuntu
+    ssh_private_key: /Users/zhuohan123/.ssh/shared_key.pem
+
+head_node:
+    InstanceType: m5.4xlarge
+    ImageId: ami-0f1ec76edd85bfd5d # hoplite-artifact-new-3
+    KeyName: shared_key
+    SecurityGroupIds:
+        - "sg-f55048b4"
+    Placement:
+        GroupName: hoplite-group
+
+worker_nodes:
+    InstanceType: m5.4xlarge
+    ImageId: ami-0f1ec76edd85bfd5d # hoplite-artifact-new-3
+    KeyName: shared_key
+    SecurityGroupIds:
+        - "sg-f55048b4"
+    Placement:
+        GroupName: hoplite-group
+
+setup_commands:
+    - sudo mount -t efs fs-07737200:/ ~/efs
+    - sudo chmod 777 ~/efs
+
+# Command to start ray on the head node. You don't need to change this.
+head_start_ray_commands: []
+
+# Command to start ray on worker nodes. You don't need to change this.
+worker_start_ray_commands: []
